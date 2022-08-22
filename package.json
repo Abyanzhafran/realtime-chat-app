@@ -1,0 +1,31 @@
+{
+  "name": "realtime-chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon --exec npm run dev",
+    "dev": "concurrently \"node server.js\" \"npx tailwindcss -i ./tailwind.css -o ./public/style.css\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abyanzhafran/realtime-chat-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Abyanzhafran/realtime-chat-app/issues"
+  },
+  "homepage": "https://github.com/Abyanzhafran/realtime-chat-app#readme",
+  "dependencies": {
+    "autoprefixer": "^10.4.8",
+    "concurrently": "^7.3.0",
+    "express": "^4.18.1",
+    "nodemon": "^2.0.19",
+    "postcss-cli": "^10.0.0",
+    "socket.io": "^4.5.1",
+    "tailwindcss": "^3.1.8"
+  }
+}
