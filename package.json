@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon --exec npm run dev",
-    "dev": "concurrently \"node server.js\" \"npx tailwindcss -i ./tailwind.css -o ./public/style.css\"",
+    "dev": "concurrently \"node server.js\" \"npx tailwindcss -i ./tailwind.css -o ./public/css/style.css\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

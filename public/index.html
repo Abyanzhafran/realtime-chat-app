@@ -6,13 +6,78 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" type="text/css" href="/style.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
-  <div class="bg-gray-500">
-    <p class="text-sky-500 ">itulah memang</p>
+  <div class="min-h-screen bg-gray-100 md:flex">
+    <!--mobile menu bar-->
+    <div class="bg-gray-800 text-gray-100 text-center flex justify-between md:hidden">
+      <div></div>
+      <!--logo-->
+      <a class="text-white font-bold flex space-x-2 my-auto" href="#">
+        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+        </svg>
+        <span>TailwindCSS</span>
+      </a>
+      <!--mobile menu button-->
+      <button class="p-4 focus:outline-none focus:bg-gray-600 hover:bg-gray-700" id="mobile-menu-button">
+        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+    <!--sidebar-->
+    <div id="sidebar"
+      class="bg-slate-800 text-blue-100 font-semibold w-64 space-y-2 px-2 py-7 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration 150 ease-in-out">
+      <a class="flex items-center text-white space-x-2 -space-y-1 px-4" href="#">
+        <div class="rounded-full w-12 h-12">
+          <img src="/assets/incognito_mode.png">
+        </div>
+        <span class="text-2xl font-extrabold">iChat</span>
+      </a>
+      <!--nav-->
+      <div class="pt-6">
+        <div class="flex items-center p-4 gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          <span class="text-lg">Room Name</span>
+        </div>
+
+        <div class="flex items-center p-4 gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round"
+              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <span class="text-lg">Users</span>
+        </div>
+      </div>
+    </div>
+    <!--content-->
+    <div class="flex items-end justify-center w-full">
+      <form class="w-full bg-white rounded-lg" action="">
+        <div class="flex items-center justify-center w-full h-full gap-4 py-4 px-6">
+          <input
+            class="w-full text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline py-1 px-3"
+            type="text" placeholder="Username">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-1 px-3">
+            Send
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
+
+
+  <script src="/js/index.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io();
