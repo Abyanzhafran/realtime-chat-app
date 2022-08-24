@@ -81,88 +81,19 @@
     <div class="flex flex-col h-full md:relative">
       <div class="flex flex-col gap-4 md:w-3/4 h-screen pt-4 pb-24 overflow-auto md:absolute md:right-0">
         <div class="bg-gray-400 w-fit max-w-auto mx-4 rounded-lg">
-          <div class="pt-2">
-            <span class="text-dark text-lg font-bold pl-3">Your name</span>
-            <p class="text-dark font-normal px-3 pb-3">lorem ipsum dolor lorem ipsum</p>
-          </div>
-        </div>
-        <div class="bg-gray-400 w-fit max-w-auto mx-4 rounded-lg">
-          <div class="pt-2">
-            <span class="text-dark text-lg font-bold pl-3">Your name</span>
-            <p class="text-dark font-normal px-3 pb-3">lorem ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum lorem
-              ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum</p>
-          </div>
-        </div>
-        <div class="bg-gray-400 w-fit max-w-auto mx-4 rounded-lg">
-          <div class="pt-2">
-            <span class="text-dark text-lg font-bold pl-3">Your name</span>
-            <p class="text-dark font-normal px-3 pb-3">lorem ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum lorem
-              ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum</p>
-          </div>
-        </div>
-        <div class="bg-gray-400 w-fit max-w-auto mx-4 rounded-lg">
-          <div class="pt-2">
-            <span class="text-dark text-lg font-bold pl-3">Your name</span>
-            <p class="text-dark font-normal px-3 pb-3">lorem ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum lorem
-              ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum</p>
-          </div>
-        </div>
-        <div class="bg-gray-400 w-fit max-w-auto mx-4 rounded-lg">
-          <div class="pt-2">
-            <span class="text-dark text-lg font-bold pl-3">Your name</span>
-            <p class="text-dark font-normal px-3 pb-3">lorem ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum lorem
-              ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum ipsum dolor lorem ipsum lorem ipsum dolor lorem
-              ipsum ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum</p>
-          </div>
-        </div>
-        <div class="bg-gray-400 w-fit max-w-auto mx-4 rounded-lg">
-          <div class="pt-2">
-            <span class="text-dark text-lg font-bold pl-3">Your name</span>
-            <p class="text-dark font-normal px-3 pb-3">lorem ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum lorem
-              ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum ipsum dolor lorem ipsum lorem ipsum dolor lorem
-              ipsum ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum</p>
-          </div>
-        </div>
-        <div class="bg-gray-400 w-fit max-w-auto mx-4 rounded-lg">
-          <div class="pt-2">
-            <span class="text-dark text-lg font-bold pl-3">Your name</span>
-            <p class="text-dark font-normal px-3 pb-3">lorem ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum lorem
-              ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum ipsum dolor lorem ipsum lorem ipsum dolor lorem
-              ipsum ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum</p>
-          </div>
-        </div>
-        <div class="bg-gray-400 w-fit max-w-auto mx-4 rounded-lg">
-          <div class="pt-2">
-            <span class="text-dark text-lg font-bold pl-3">Your name</span>
-            <p class="text-dark font-normal px-3 pb-3">lorem ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum lorem
-              ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum ipsum dolor lorem ipsum lorem ipsum dolor lorem
-              ipsum ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum</p>
-          </div>
-        </div>
-        <div class="bg-gray-400 w-fit max-w-auto mx-4 rounded-lg">
-          <div class="pt-2">
-            <span class="text-dark text-lg font-bold pl-3">Your name</span>
-            <p class="text-dark font-normal px-3 pb-3">lorem ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum lorem
-              ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum ipsum dolor lorem ipsum lorem ipsum dolor lorem
-              ipsum ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum</p>
-          </div>
-        </div>
-        <div class="bg-gray-400 w-fit max-w-auto mx-4 rounded-lg">
-          <div class="pt-2">
-            <span class="text-dark text-lg font-bold pl-3">Your name</span>
-            <p class="text-dark font-normal px-3 pb-3">lorem ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum lorem
-              ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum ipsum dolor lorem ipsum lorem ipsum dolor lorem
-              ipsum ipsum dolor lorem ipsum lorem ipsum dolor lorem ipsum</p>
+          <div class="pt-2 px-3">
+            <span class="text-dark text-lg font-bold">Your name</span>
+            <p class="text-dark font-normal pb-3" id="messages"></p>
           </div>
         </div>
       </div>
 
       <div class="flex items-end md:absolute md:bottom-0 md:right-0 shadow-md md:w-3/4">
-        <form class="w-full bg-slate-800" action="">
+        <form class="w-full bg-slate-800" action="" id="form">
           <div class="flex items-center justify-center w-full h-full gap-4 py-4 px-6">
             <input
               class="w-full text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline py-1 px-3"
-              type="text" placeholder="Username">
+              type="text" placeholder="Username" id="input">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-1 px-3">
               Send
             </button>
@@ -176,6 +107,25 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io();
+
+    var messages = document.getElementById('messages');
+    var form = document.getElementById('form');
+    var input = document.getElementById('input');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (input.value) {
+        socket.emit('chat message', input.value);
+        input.value = '';
+      }
+    });
+
+    socket.on('chat message', function (msg) {
+      var item = document.createElement('p');
+      item.textContent = msg;
+      messages.appendChild(item);
+      window.scrollTo(0, document.body.scrollHeight);
+    });
   </script>
 </body>
 

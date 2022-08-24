@@ -1,9 +1,7 @@
 const express = require('express');
 const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
+const http = require('http').Server(app);
+const io = require("socket.io")(http);
 const port = process.env.PORT || 3000;
 
 app.use(express.static('public'))
@@ -16,13 +14,23 @@ app.get('/login', (req, res) => {
   res.sendFile(__dirname + '/public/login.html');
 });
 
+// io.on('connection', (socket) => {
+//   console.log('a user connected');
+//   socket.on('disconnect', () => {
+//     console.log('user disconnected');
+//   });
+// });
+
 io.on('connection', (socket) => {
-  console.log('a user connected');
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+  socket.on('chat message', msg => {
+    io.emit('chat message', msg);
   });
 });
 
-app.listen(port, () => {
-  console.log(`server running at  http://localhost:${port}/`)
-})
+// app.listen(port, () => {
+//   console.log(`server running at  http://localhost:${port}/`)
+// })
+
+http.listen(port, () => {
+  console.log(`Socket.IO server running at http://localhost:${port}/`);
+});
