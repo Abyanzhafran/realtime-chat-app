@@ -5,6 +5,19 @@ btn.addEventListener("click", () => {
   sidebar.classList.toggle("-translate-x-full");
 });
 
+// get username and room
+const roomList = document.getElementById('roomList')
+const userList = document.getElementById('userList')
+
+form.addEventListener('click', function (e) {
+  e.preventDefault()
+  if (input.value) {
+    socket.emit('username', input.value);
+    input.value = '';
+  }
+})
+
+// get message from current user
 var messages = document.getElementById('messages');
 var form = document.getElementById('form');
 var input = document.getElementById('input');
