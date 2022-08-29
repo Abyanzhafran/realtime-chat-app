@@ -4,8 +4,8 @@ const http = require('http').Server(app);
 const io = require("socket.io")(http);
 const port = process.env.PORT || 3001;
 
-var users = {}
 var rooms = {}
+// var users = []
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
@@ -15,25 +15,31 @@ app.get('/', (req, res) => {
   res.render('index')
 })
 
-app.post('/chat', (req, res) => {
-  users = req.body.username
-  rooms = req.body.room
-  if (users !== '' || rooms !== '') {
-    res.redirect('/chat')
+app.post('/room', (req, res) => {
+  // users.push(req.body.username)
+  rooms[req.body.room] = { users: {} }
+  if (req.body.username !== '' && req.body.room !== '') {
+    res.redirect(req.body.room)
+    io.emit('room-created', req.body.room)
   }
   res.redirect('/')
 })
 
 app.get('/chat', (req, res) => {
-  if (users == '' || rooms == '') {
-    res.redirect('/')
+  res.redirect('/')
+})
+
+app.get('/:room', (req, res) => {
+  if (rooms[req.params.room] == '') {
+    return res.redirect('/')
   }
   res.render('chat')
+  console.log(rooms)
 })
 
 io.on('connection', (socket) => {
-  socket.on('chat message', msg => {
-    io.emit('chat message', msg);
+  socket.on('chat-message', msg => {
+    io.emit('chat-message', msg);
   });
 });
 

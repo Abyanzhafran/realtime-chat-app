@@ -54,7 +54,7 @@
           <span class="text-xl">Room Name</span>
         </div>
         <div class="pb-6">
-          <span class="pl-6 text-lg">Room 1</span>
+          <span class="pl-6 text-lg">roomLorem</span>
         </div>
 
         <div class="flex items-center p-4 gap-2">
@@ -83,7 +83,7 @@
       </div>
 
       <div class="flex items-end md:absolute md:bottom-0 md:right-0 shadow-md md:w-3/4">
-        <form class="w-full bg-slate-800" action="" id="form">
+        <form class="w-full bg-slate-800" action="" id="form-message">
           <div class="flex items-center justify-center w-full h-full gap-4 py-4 px-6">
             <input
               class="w-full text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline py-1 px-3"
@@ -100,6 +100,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io();
+    console.log(rooms)
   </script>
   <script src="/js/script.js"></script>
 </body>
