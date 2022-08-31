@@ -22,8 +22,8 @@
   "dependencies": {
     "autoprefixer": "^10.4.8",
     "concurrently": "^7.3.0",
-    "ejs": "^3.1.8",
     "express": "^4.18.1",
+    "moment-timezone": "^0.5.37",
     "nodemon": "^2.0.19",
     "postcss-cli": "^10.0.0",
     "socket.io": "^4.5.1",

@@ -1,48 +1,76 @@
 const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+const path = require('path');
+const formatMessage = require('./utils/messages');
+const {
+  userJoin,
+  getCurrentUser,
+  userLeave,
+  getRoomUsers,
+} = require('./utils/users');
+
 const app = express();
-const http = require('http').Server(app);
-const io = require("socket.io")(http);
-const port = process.env.PORT || 3001;
+const server = http.createServer(app);
+const io = socketIo(server);
 
-var rooms = {}
-// var users = []
+// set static file
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.set('view engine', 'ejs')
-app.use(express.static('public'))
-app.use(express.urlencoded({ extended: true }))
+const botName = 'iChat Bot';
 
-app.get('/', (req, res) => {
-  res.render('index')
-})
-
-app.post('/room', (req, res) => {
-  // users.push(req.body.username)
-  rooms[req.body.room] = { users: {} }
-  if (req.body.username !== '' && req.body.room !== '') {
-    res.redirect(req.body.room)
-    io.emit('room-created', req.body.room)
-  }
-  res.redirect('/')
-})
-
-app.get('/chat', (req, res) => {
-  res.redirect('/')
-})
-
-app.get('/:room', (req, res) => {
-  if (rooms[req.params.room] == '') {
-    return res.redirect('/')
-  }
-  res.render('chat')
-  console.log(rooms)
-})
-
+// run when client connects
 io.on('connection', (socket) => {
-  socket.on('chat-message', msg => {
-    io.emit('chat-message', msg);
+  socket.on('joinRoom', ({ username, room }) => {
+    const user = userJoin(socket.id, username, room);
+
+    socket.join(user.room);
+
+    // welcome current user
+    socket.emit('message', formatMessage(botName, 'Welcome to iChat! bro bro QyuGii'));
+
+    // broadcast when a user connects
+    socket.broadcast
+      .to(user.room)
+      .emit(
+        'message',
+        formatMessage(botName, `${user.username} joined the chat!`)
+      );
+
+    // send users and room info
+    io.to(user.room).emit('roomUsers', {
+      room: user.room,
+      users: getRoomUsers(user.room),
+    });
+  });
+
+  // listen for chatMessage
+  socket.on('chatMessage', (msg) => {
+    const user = getCurrentUser(socket.id);
+
+    io.to(user.room).emit('message', formatMessage(user.username, msg));
+  });
+
+  // runs when clients disconnects
+  socket.on('disconnect', () => {
+    const user = userLeave(socket.id);
+
+    if (user) {
+      io.to(user.room).emit(
+        'message',
+        formatMessage(botName, `${user.username} has left the chat!`)
+      );
+
+      // send users and room info
+      io.to(user.room).emit('roomUsers', {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
+    }
   });
 });
 
-http.listen(port, () => {
-  console.log(`Socket.IO server running at http://localhost:${port}/`);
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`🎯 Server is running on PORT: ${PORT}`);
 });
