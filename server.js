@@ -1,24 +1,76 @@
 const express = require('express');
-const app = express();
 const http = require('http');
+const socketIo = require('socket.io');
+const path = require('path');
+const formatMessage = require('./utils/messages');
+const {
+  userJoin,
+  getCurrentUser,
+  userLeave,
+  getRoomUsers,
+} = require('./utils/users');
+
+const app = express();
 const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
-const port = process.env.PORT || 3000;
+const io = socketIo(server);
 
-app.use(express.static('public'))
+// set static file
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
-});
+const botName = 'iChat Bot';
 
+// run when client connects
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  socket.on('joinRoom', ({ username, room }) => {
+    const user = userJoin(socket.id, username, room);
+
+    socket.join(user.room);
+
+    // welcome current user
+    socket.emit('message', formatMessage(botName, 'Welcome to iChat! bro bro QyuGii'));
+
+    // broadcast when a user connects
+    socket.broadcast
+      .to(user.room)
+      .emit(
+        'message',
+        formatMessage(botName, `${user.username} joined the chat!`)
+      );
+
+    // send users and room info
+    io.to(user.room).emit('roomUsers', {
+      room: user.room,
+      users: getRoomUsers(user.room),
+    });
+  });
+
+  // listen for chatMessage
+  socket.on('chatMessage', (msg) => {
+    const user = getCurrentUser(socket.id);
+
+    io.to(user.room).emit('message', formatMessage(user.username, msg));
+  });
+
+  // runs when clients disconnects
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    const user = userLeave(socket.id);
+
+    if (user) {
+      io.to(user.room).emit(
+        'message',
+        formatMessage(botName, `${user.username} has left the chat!`)
+      );
+
+      // send users and room info
+      io.to(user.room).emit('roomUsers', {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
+    }
   });
 });
 
-app.listen(port, () => {
-  console.log(`server running at  http://localhost:${port}/`)
-})
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`🎯 Server is running on PORT: ${PORT}`);
+});
