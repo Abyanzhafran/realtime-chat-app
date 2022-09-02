@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Abyanzhafran/realtime-chat-app#readme",
   "dependencies": {
+    "@vercel/node": "^2.5.13",
     "autoprefixer": "^10.4.8",
     "concurrently": "^7.3.0",
     "express": "^4.18.1",
