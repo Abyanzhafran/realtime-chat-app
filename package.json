@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "build": "npx tailwindcss -i ./tailwind.css -o ./public/css/style.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
