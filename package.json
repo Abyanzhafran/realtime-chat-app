@@ -20,14 +20,14 @@
   },
   "homepage": "https://github.com/Abyanzhafran/realtime-chat-app#readme",
   "dependencies": {
-    "@vercel/node": "^2.5.13",
-    "autoprefixer": "^10.4.8",
-    "concurrently": "^7.3.0",
-    "express": "^4.18.1",
-    "moment-timezone": "^0.5.37",
-    "nodemon": "^2.0.19",
-    "postcss-cli": "^10.0.0",
-    "socket.io": "^4.5.1",
-    "tailwindcss": "^3.1.8"
+    "@vercel/node": "^3.0.11",
+    "autoprefixer": "^10.4.16",
+    "concurrently": "^8.2.2",
+    "express": "^4.18.2",
+    "moment-timezone": "^0.5.43",
+    "nodemon": "^3.0.1",
+    "postcss-cli": "^10.1.0",
+    "socket.io": "^4.7.2",
+    "tailwindcss": "^3.3.5"
   }
 }
