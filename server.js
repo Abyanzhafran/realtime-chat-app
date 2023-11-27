@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
     socket.join(user.room);
 
     // welcome current user
-    socket.emit('message', formatMessage(botName, 'Welcome to iChat! bro bro QyuGii'));
+    socket.emit('message', formatMessage(botName, 'Welcome to iChat! bro bro'));
 
     // broadcast when a user connects
     socket.broadcast
@@ -72,5 +72,5 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`🎯 Server is running on PORT: ${PORT}`);
+  console.log(`Server is running on PORT: ${PORT}`);
 });
